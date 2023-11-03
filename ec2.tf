@@ -47,4 +47,9 @@ resource "aws_instance" "od" {
 #   value = aws_instance.sample.public_ip
 # }
 
+
+
+  tags = {
+    Name = "${var.COMPONENT}-${var.ENV}"
+  }
 }
