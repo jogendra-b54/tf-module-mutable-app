@@ -6,7 +6,8 @@ resource "aws_lb_target_group" "app" {
   vpc_id   = data.terraform_remote_state.vpc.outputs.VPC_ID
 }
 
-# Attach the Target group to the ALB ( frontend TG should be attached to public ALB and backend TG should attah to private ALB)
+
+# Adds the instances to the Target Group
 resource "aws_lb_target_group_attachment" "attach_instances" {
  
   count               =  local.INSTANCE_COUNT
@@ -14,3 +15,6 @@ resource "aws_lb_target_group_attachment" "attach_instances" {
   target_id           = element(local.INSTANCE_IDS,count.index) 
   port                = 8080
 }
+
+# Attach the Target group to the ALB ( frontend TG should be attached to public ALB and backend TG should attah to private ALB)
+
