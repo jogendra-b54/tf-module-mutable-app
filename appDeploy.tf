@@ -11,7 +11,7 @@ resource "null_resource" "app_deploy" {
     host     = element(local.INSTANCE_IPS , count.index)      #aws_instance.sample.private_ip : use this only if your provisioner is outside the resourcee
   }
     inline = [
-        sh "hostname"
+        hostname
     #   "ansible-pull -U https://github.com/jogendra-b54/ansible.git -e ENV=dev -e COMPONENT=${var.COMPONENT} -e APP_VERSION=${var.APP_VERSION} roboshop-pull.yml",
     ]
   }
