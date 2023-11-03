@@ -9,10 +9,13 @@ resource "aws_spot_instance_request" "spot" {
   subnet_id              = element(data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS , count.index)
   wait_for_fulfillment = true
 
+    # This creates Tag name to the spot request not to the spot ec2 instance
   tags = {
     Name = "${var.COMPONENT}-${var.ENV}"
   }
 }
+
+# Creating tag and attaching it to the instances
 
 # Create on-Demand Backend Components
 resource "aws_instance" "od" {
@@ -49,7 +52,17 @@ resource "aws_instance" "od" {
 
 
 
-  tags = {
-    Name = "${var.COMPONENT}-${var.ENV}"
-  }
+  
+}
+
+
+resource "aws_ec2_tag" "tags" {
+
+    count       = var.OD_INSTANCE_COUNT + var.SPOT_INSTANCE_COUNT
+
+
+  //resource_id = [OD Instance instanceID + SPOT Instance IDs]
+  resource_id = concat(aws_spot_instance_request.spot.*.spot_instance_id, aws_instance.od.*.id)
+  key         = "Name"
+  value       = "${var.COMPONENT}-${var.ENV}"
 }
