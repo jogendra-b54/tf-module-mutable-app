@@ -55,6 +55,9 @@ resource "aws_instance" "od" {
   
 }
 
+locals {
+  INSTANCE_IDS = concat(aws_spot_instance_request.spot.*.spot_instance_id, aws_instance.od.*.id) 
+}
 
 resource "aws_ec2_tag" "tags" {
 
@@ -62,7 +65,7 @@ resource "aws_ec2_tag" "tags" {
 
 
   //resource_id = [OD Instance instanceID + SPOT Instance IDs]
-  resource_id = concat(aws_spot_instance_request.spot.*.spot_instance_id, aws_instance.od.*.id)
+  resource_id = element(local.INSTANCE_IDS , count.index)
   key         = "Name"
   value       = "${var.COMPONENT}-${var.ENV}"
 }
