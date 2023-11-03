@@ -28,7 +28,7 @@ resource "aws_lb_listener_rule" "app_rule" {
 
   condition {
     host_header {
-      values = ["${var.COMPONENT}-${var.ENV}.data.terraform_remote_state.alb.outputs.PRIVATE_HOSTED_ZONE_NAME"]
+      values = ["${var.COMPONENT}-${var.ENV}.${data.terraform_remote_state.alb.outputs.PRIVATE_HOSTED_ZONE_NAME}"]
     }
   }
 }
