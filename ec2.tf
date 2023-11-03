@@ -27,41 +27,20 @@ resource "aws_instance" "od" {
    subnet_id              = element(data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS , count.index)
 
 
-# This will be executed  on the top of the machine once its created ....
-#  provisioner "remote-exec" {
-#   # connection block establishes connection to this 
-#   connection {
-#     type     = "ssh"
-#     user     = "centos"
-#     password = "DevOps321"
-#     host     = self.private_ip      #aws_instance.sample.private_ip : use this only if your provisioner is outside the resourcee
-#   }
-#     inline = [
-#       "ansible-pull -U https://github.com/jogendra-b54/ansible.git -e ENV=dev -e COMPONENT=${var.COMPONENT} -e APP_VERSION=${var.APP_VERSION} roboshop-pull.yml",
-#     ]
-#   }
-
-# }
-
-# variable "sg" {}   # step 3: now to use this infor, declare an empty variable and use it (in root module , we have declared "sg=var.sgid")
-
-
-# output "public_ip" {
-#   value = aws_instance.sample.public_ip
-# }
-
 
 
   
 }
 
 locals {
-  INSTANCE_IDS = concat(aws_spot_instance_request.spot.*.spot_instance_id, aws_instance.od.*.id) 
+  INSTANCE_IDS    = concat(aws_spot_instance_request.spot.*.spot_instance_id, aws_instance.od.*.id) 
+  INSTANCE_COUNT  = var.OD_INSTANCE_COUNT + var.SPOT_INSTANCE_COUNT
+  INSTANCE_IPS    = concat(aws_spot_instance_request.spot.*.private_ip , aws_instance.od.*.private_ip) )
 }
 
 resource "aws_ec2_tag" "tags" {
 
-    count       = var.OD_INSTANCE_COUNT + var.SPOT_INSTANCE_COUNT
+    count       = local.INSTANCE_COUNT
 
 
   //resource_id = [OD Instance instanceID + SPOT Instance IDs]
