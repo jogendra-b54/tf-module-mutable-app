@@ -1,6 +1,10 @@
 resource "null_resource" "app_deploy" {
-    count   =  local.INSTANCE_COUNT
+  triggers = {
+        always_run = timestamp() // whenever you deply a nwe change in runs because it compares the time as everytume you deploy a new timestamp will create
+       #APP_VERSION = var.APP_VERSION   // whenver there is a change in the version then the tigger should run
+  }
 
+    count   =  local.INSTANCE_COUNT
     provisioner "remote-exec" {
   
   # connection block establishes connection to this 
