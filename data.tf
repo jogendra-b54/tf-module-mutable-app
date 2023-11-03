@@ -17,3 +17,10 @@
     }
    
  }
+# Ensure you create an AMI  : using my lab Image {create an instance , Install ansible and make an AMI and use it}
+ data "aws_ami" "image" {
+  most_recent  = true
+  name_regex = "ansible-lab-image"
+  owners = ["self"]
+
+  }
