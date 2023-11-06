@@ -6,4 +6,4 @@ variable "OD_INSTANCE_COUNT" {}
 variable "OD_INSTANCE_TYPE" {}
 variable "APP_PORT" {}
 variable "APP_VERSION" {}
-#variable "LB_TYPE" {}
+variable "LB_TYPE" {}
