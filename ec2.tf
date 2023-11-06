@@ -29,7 +29,7 @@ resource "aws_instance" "od" {
   iam_instance_profile = "b54-admin"
 
   tags = {
-    Name       = "${var.COMPONENT}-${var.ENV}"
+    Name       = "${var.COMPONENT}-${var.ENV}-od"
     //prometheus-monitor =
   }
 
