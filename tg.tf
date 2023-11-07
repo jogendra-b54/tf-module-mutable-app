@@ -25,6 +25,7 @@ resource "aws_lb_target_group_attachment" "attach_instances" {
   port                = 8080
 }
 
+# Generates Random Number
 resource "random_integer" "priority" {
       max        =  100
       min        = 500
