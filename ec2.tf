@@ -16,7 +16,6 @@ resource "aws_spot_instance_request" "spot" {
   }
 }
 
-# Creating tag and attaching it to the instances
 
 # Create on-Demand Backend Components
 resource "aws_instance" "od" {
@@ -38,14 +37,26 @@ resource "aws_instance" "od" {
   
 }
 
-
+# Creating tag and attaching it to the instances
 resource "aws_ec2_tag" "tags" {
-
-    count       = local.INSTANCE_COUNT
-
-
-  //resource_id = [OD Instance instanceID + SPOT Instance IDs]
+  count       = local.INSTANCE_COUNT
   resource_id = element(local.INSTANCE_IDS , count.index)
   key         = "Name"
   value       = "${var.COMPONENT}-${var.ENV}"
+}
+
+# Creating tag and attaching it to the instances, so that prometheus will monitor
+resource "aws_ec2_tag" "prom_tag" {
+  count       = local.INSTANCE_COUNT
+  resource_id = element(local.INSTANCE_IDS , count.index)
+  key         = "prometheus-monitor"
+  value       = "yes"
+}
+
+# Creating tag and attaching it to the instances, so that prometheus will monitor
+resource "aws_ec2_tag" "env" {
+  count       = local.INSTANCE_COUNT
+  resource_id = element(local.INSTANCE_IDS , count.index)
+  key         = "ENV"
+  value       = var.ENV
 }
