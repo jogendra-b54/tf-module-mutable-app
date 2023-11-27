@@ -12,8 +12,8 @@ resource "aws_spot_instance_request" "spot" {
 
     # This creates Tag name to the spot request not to the spot ec2 instance
   tags = {
-    Name = "${var.COMPONENT}-${var.ENV}"
-  }
+    Name                = "${var.COMPONENT}-${var.ENV}"
+    }
 }
 
 
@@ -29,13 +29,12 @@ resource "aws_instance" "od" {
   iam_instance_profile = "b54-admin"
 
   tags = {
-    Name       = "${var.COMPONENT}-${var.ENV}"
-    //prometheus-monitor =
+    Name               = "${var.COMPONENT}-${var.ENV}"
+    prometheus-monitor =  "Yes"
   }
-
-
   
 }
+
 
 # Creating tag and attaching it to the instances
 resource "aws_ec2_tag" "tags" {
