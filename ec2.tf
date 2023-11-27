@@ -30,7 +30,7 @@ resource "aws_instance" "od" {
 
   tags = {
     Name               = "${var.COMPONENT}-${var.ENV}"
-    prometheus-monitor =  "Yes"
+    prometheus-monitor =  "yes"
   }
   
 }
